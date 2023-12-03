@@ -1,5 +1,5 @@
 
-# Single Repo for both CI and CD
+//Single Repo for both CI and CD
 
 pipeline {
     agent any
