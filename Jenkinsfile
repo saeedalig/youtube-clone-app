@@ -11,7 +11,7 @@ pipeline {
 	
     environment {
         SCANNER_HOME = tool 'sonar-scanner'
-        DOCKERHUB = "asa96"
+        DOCKERHUB_USERNAME = "asa96"
         APP_NAME = "youtube"
         IMAGE_TAG = "${BUILD_NUMBER}"
         IMAGE_NAME = "${DOCKERHUB}" + "/" + "${APP_NAME}"
@@ -28,7 +28,7 @@ pipeline {
             }
         }
 		
-        stage('Code Checkout'){
+        stage('Checkout SCM'){
             steps {
                 git credentialsId: 'github-auth', 
                 url: 'https://github.com/saeedalig/youtube-clone-app.git',
@@ -58,14 +58,26 @@ pipeline {
             } 
         }
 		
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    // Define your build arguments
-                    def buildArgs = "--build-arg RAPID_API_KEY=rapid-api-key"
 
-                    // Build the Docker image with build arguments
-                    docker_image = docker.build("${IMAGE_NAME}", buildArgs: buildArgs)
+        stage("Docker Build & Tag"){
+            steps{
+                script{
+
+                    sh "docker build --build-arg REACT_APP_RAPID_API_KEY=252f61132fmshde283ead7250c26p109475jsna4c8a163b047 -t ${APP_NAME} ."
+                    sh "docker tag youtube ${APP_NAME}:${IMAGE_TAG} "
+                    sh "docker tag youtube ${APP_NAME}:latest "
+                    
+                }
+            }
+        }
+
+        stage('Docker Push') {
+
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-auth', passwordVariable: 'PASSWD', usernameVariable: 'USER')]) {
+                    sh "docker login -u ${env.USER} -p ${env.PASSWD}"
+                    sh "docker push ${APP_NAME}:${IMAGE_TAG}"
+                    sh "docker push ${APP_NAME}:latest"
                 }
             }
         }
