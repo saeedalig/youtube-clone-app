@@ -64,8 +64,8 @@ pipeline {
                 script{
 
                     sh "docker build --build-arg REACT_APP_RAPID_API_KEY=252f61132fmshde283ead7250c26p109475jsna4c8a163b047 -t ${APP_NAME} ."
-                    sh "docker tag youtube ${DOCKERHUB_USERNAME}/${APP_NAME}:${IMAGE_TAG}"
-                    sh "docker tag youtube ${DOCKERHUB_USERNAME}/${APP_NAME}:latest"
+                    sh "docker tag ${APP_NAME} ${IMAGE_NAME}:${IMAGE_TAG}"
+                    sh "docker tag ${APP_NAME} ${IMAGE_NAME}:latest"
                     
                 }
             }
@@ -83,23 +83,12 @@ pipeline {
         }
 
 		
-        // stage('Push Docker Image'){
-        //     steps {
-        //         script{
-        //             docker.withRegistry('', REGISTRY_CREDS ){
-        //                 docker_image.push("${BUILD_NUMBER}")
-        //                 docker_image.push('latest')
-        //             }
-        //         }
-        //     }
-        // } 
-		
-        // stage('Delete Docker Images'){
-        //     steps {
-        //         sh "docker rmi ${IMAGE_NAME}:${IMAGE_TAG}"
-        //         sh "docker rmi ${IMAGE_NAME}:latest"
-        //     }
-        // }
+        stage('Delete Docker Images'){
+            steps {
+                sh "docker rmi ${IMAGE_NAME}:${IMAGE_TAG}"
+                sh "docker rmi ${IMAGE_NAME}:latest"
+            }
+        }
 		
 		// stage('Update k8s deployment file'){
         //     steps {
