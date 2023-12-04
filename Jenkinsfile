@@ -44,7 +44,6 @@ pipeline {
 					-Dsonar.java.binaries=.\
 					-Dsonar.projectKey=youtube \
 					-Dsonar.sources=. \
-					-Dsonar.host.url=https://sonarcloud.io
 					'''
                 }
             }
