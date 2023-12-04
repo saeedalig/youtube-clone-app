@@ -64,8 +64,8 @@ pipeline {
                 script{
 
                     sh "docker build --build-arg REACT_APP_RAPID_API_KEY=252f61132fmshde283ead7250c26p109475jsna4c8a163b047 -t ${APP_NAME} ."
-                    sh "docker tag youtube ${APP_NAME}:${IMAGE_TAG} "
-                    sh "docker tag youtube ${APP_NAME}:latest "
+                    sh "docker tag youtube ${DOCKERHUB_USERNAME}/${APP_NAME}:${IMAGE_TAG}"
+                    sh "docker tag youtube ${DOCKERHUB_USERNAME}/${APP_NAME}:latest"
                     
                 }
             }
@@ -76,8 +76,8 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-auth', passwordVariable: 'PASSWD', usernameVariable: 'USER')]) {
                     sh "docker login -u ${env.USER} -p ${env.PASSWD}"
-                    sh "docker push ${APP_NAME}:${IMAGE_TAG}"
-                    sh "docker push ${APP_NAME}:latest"
+                    sh "docker push ${DOCKERHUB_USERNAME}/${APP_NAME}:${IMAGE_TAG}"
+                    sh "docker push ${DOCKERHUB_USERNAME}/${APP_NAME}:latest"
                 }
             }
         }
