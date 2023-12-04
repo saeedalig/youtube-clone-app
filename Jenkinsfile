@@ -89,14 +89,16 @@ pipeline {
                 sh "docker rmi ${IMAGE_NAME}:latest"
             }
         }
-		
-		stage('Update k8s deployment file'){
-            steps {
-                sh "cat deployment.yml"
-                sh "sed -i 's/${APP_NAME}.*/${APP_NAME}:${IMAGE_TAG}/g' deployment.yml"                
-                sh "cat deployment.yml"
-            }
+
+        stage('Update k8s deployment file') {
+            sh "cat deployment.yml"
+            sh "sed -i \"s|\\(image:.*${APP_NAME}\\).*|\\1:${IMAGE_TAG}|\" deployment.yml"
+            sh "cat deployment.yml"
+
         }
+
+		
+
         
         // stage('Push the changed deployment file to GitHub') {
         //     steps {
