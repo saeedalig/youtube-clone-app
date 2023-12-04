@@ -14,7 +14,7 @@ pipeline {
         DOCKERHUB_USERNAME = "asa96"
         APP_NAME = "youtube"
         IMAGE_TAG = "${BUILD_NUMBER}"
-        IMAGE_NAME = "${DOCKERHUB}" + "/" + "${APP_NAME}"
+        IMAGE_NAME = "${DOCKERHUB_USERNAME}" + "/" + "${APP_NAME}"
         REGISTRY_CREDS = "dockerhub-auth"
     }
 				
