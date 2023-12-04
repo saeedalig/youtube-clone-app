@@ -28,7 +28,7 @@ pipeline {
             }
         }
 		
-        stage('Code Checkout'){
+        stage('Checkout SCM'){
             steps {
                 git credentialsId: 'github-auth', 
                 url: 'https://github.com/saeedalig/youtube-clone-app.git',
@@ -63,7 +63,7 @@ pipeline {
             steps{
                 script{
 
-                    sh "docker build --build-arg REACT_APP_RAPID_API_KEY=f0ead79813ms -t ${APP_NAME} ."
+                    sh "docker build --build-arg REACT_APP_RAPID_API_KEY=252f61132fmshde283ead7250c26p109475jsna4c8a163b047 -t ${APP_NAME} ."
                     sh "docker tag youtube ${APP_NAME}:${IMAGE_TAG} "
                     sh "docker tag youtube ${APP_NAME}:latest "
                     
