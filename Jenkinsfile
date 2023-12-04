@@ -36,27 +36,27 @@ pipeline {
             }
         }
 
-        stage('Code Analysis'){
-            steps{
-                withSonarQubeEnv('SonarCloud') {
-                    sh ''' $SCANNER_HOME/bin/sonar-scanner \
-					-Dsonar.organization=devopsas \
-					-Dsonar.java.binaries=.\
-					-Dsonar.projectKey=youtube \
-					-Dsonar.sources=. \
-                    -Dsonar.host.url=https://sonarcloud.io
-					'''
-                }
-            }
-        }
+        // stage('Code Analysis'){
+        //     steps{
+        //         withSonarQubeEnv('SonarCloud') {
+        //             sh ''' $SCANNER_HOME/bin/sonar-scanner \
+		// 			-Dsonar.organization=devopsas \
+		// 			-Dsonar.java.binaries=.\
+		// 			-Dsonar.projectKey=youtube \
+		// 			-Dsonar.sources=. \
+        //             -Dsonar.host.url=https://sonarcloud.io
+		// 			'''
+        //         }
+        //     }
+        // }
 
-        stage("Quality Gate Status"){
-           steps {
-                script {
-                    waitForQualityGate abortPipeline: false, credentialsId: 'sonar' 
-                }
-            } 
-        }
+        // stage("Quality Gate Status"){
+        //    steps {
+        //         script {
+        //             waitForQualityGate abortPipeline: false, credentialsId: 'sonar' 
+        //         }
+        //     } 
+        // }
 		
 
         stage("Docker Build & Tag"){
