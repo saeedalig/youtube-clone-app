@@ -92,7 +92,7 @@ pipeline {
 		
 		stage('Update k8s deployment file'){
             steps {
-                sh "cat deployment.yaml"
+                sh "cat deployment.yml"
                 sh "sed -i 's/${APP_NAME}.*/${APP_NAME}:${IMAGE_TAG}/g' deployment.yml"                
                 sh "cat deployment.yml"
             }
