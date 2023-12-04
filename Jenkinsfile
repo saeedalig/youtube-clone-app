@@ -12,7 +12,7 @@ pipeline {
     environment {
         SCANNER_HOME = tool 'sonar-scanner'
         DOCKERHUB = "asa96"
-        APP_NAME = "flask-app"
+        APP_NAME = "youtube"
         IMAGE_TAG = "${BUILD_NUMBER}"
         IMAGE_NAME = "${DOCKERHUB}" + "/" + "${APP_NAME}"
         REGISTRY_CREDS = "dockerhub-auth"
@@ -36,7 +36,7 @@ pipeline {
             }
         }
 
-        stage('Sonarqube Code Analysis: SONARQUBE'){
+        stage('Code Analysis'){
             steps{
                 withSonarQubeEnv('SonarCloud') {
                     sh ''' $SCANNER_HOME/bin/sonar-scanner \
@@ -44,12 +44,13 @@ pipeline {
 					-Dsonar.java.binaries=.\
 					-Dsonar.projectKey=youtube \
 					-Dsonar.sources=. \
+                    -Dsonar.host.url=https://sonarcloud.io
 					'''
                 }
             }
         }
 
-        stage("Quality Gate"){
+        stage("Quality Gate Status"){
            steps {
                 script {
                     waitForQualityGate abortPipeline: false, credentialsId: 'sonar' 
@@ -57,13 +58,18 @@ pipeline {
             } 
         }
 		
-        // stage('Build Docker Image'){
-        //     steps {
-        //         script{
-        //             docker_image = docker.build "${IMAGE_NAME}"
-        //         }
-        //     }
-        // }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    // Define your build arguments
+                    def buildArgs = "--build-arg RAPID_API_KEY=rapid-api-key"
+
+                    // Build the Docker image with build arguments
+                    docker_image = docker.build("${IMAGE_NAME}", buildArgs: buildArgs)
+                }
+            }
+        }
+
 		
         // stage('Push Docker Image'){
         //     steps {
