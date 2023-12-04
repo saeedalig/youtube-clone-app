@@ -91,11 +91,10 @@ pipeline {
         }
 
         stage('Update k8s deployment file') {
-	    steps {
-		sh "cat deployment.yml"
-                sh "sed -i \"s|\\(image:.*${APP_NAME}\\).*|\\1:${IMAGE_TAG}|\" deployment.yml"
-                sh "cat deployment.yml"		    
-	    }		            
+            sh "cat deployment.yml"
+            sh "sed -i \"s|\\(image:.*${APP_NAME}\\).*|\\1:${IMAGE_TAG}|\" deployment.yml"
+            sh "cat deployment.yml"
+
         }
 
 		
@@ -105,9 +104,9 @@ pipeline {
         //     steps {
         //         script {
         //             sh """
-        //             git config --global user.name "saeed"
-        //             git config --global user.email "saeed@gmail.com"
-        //             git add deployment.yaml
+        //             git config --global user.name "zeal"
+        //             git config --global user.email "zeal@gmail.com"
+        //             git add deployment.yml
         //             git commit -m 'Updated the deployment file'
         //             """
         //             withCredentials([usernamePassword(credentialsId: 'github', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
