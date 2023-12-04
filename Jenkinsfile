@@ -9,13 +9,14 @@ pipeline {
         nodejs 'node16'
     }
 	
-    // environment {
-    //     DOCKERHUB = "asa96"
-    //     APP_NAME = "flask-app"
-    //     IMAGE_TAG = "${BUILD_NUMBER}"
-    //     IMAGE_NAME = "${DOCKERHUB}" + "/" + "${APP_NAME}"
-    //     REGISTRY_CREDS = "dockerhub-auth"
-    // }
+    environment {
+        SCANNER_HOME = tool 'sonar-scanner'
+        DOCKERHUB = "asa96"
+        APP_NAME = "flask-app"
+        IMAGE_TAG = "${BUILD_NUMBER}"
+        IMAGE_NAME = "${DOCKERHUB}" + "/" + "${APP_NAME}"
+        REGISTRY_CREDS = "dockerhub-auth"
+    }
 				
     stages {
 	
@@ -32,6 +33,20 @@ pipeline {
                 git credentialsId: 'github-auth', 
                 url: 'https://github.com/saeedalig/youtube-clone-app.git',
                 branch: 'main'
+            }
+        }
+
+        stage('Sonarqube Code Analysis: SONARQUBE'){
+            steps{
+                withSonarQubeEnv('SonarCloud') {
+                    sh ''' $SCANNER_HOME/bin/sonar-scanner \
+					-Dsonar.organization=devopsas \
+					-Dsonar.java.binaries=.\
+					-Dsonar.projectKey=youtube \
+					-Dsonar.sources=. \
+					-Dsonar.host.url=https://sonarcloud.io
+					'''
+                }
             }
         }
 		
