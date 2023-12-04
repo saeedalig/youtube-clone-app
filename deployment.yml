@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: my-app-deployment
+  name: youtube-deploy
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: my-app
+      app: youtube
   template:
     metadata:
       labels:
-        app: my-app
+        app: youtube
     spec:
       containers:
-        - name: my-app
-          image: sevenajay/youtube:latest
+        - name: youtube
+          image: asa96/youtube:5
           ports:
             - containerPort: 3000  # Your Node.js application should listen on port 3000
 
@@ -23,10 +23,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: my-app-service
+  name: youtube-svc
 spec:
   selector:
-    app: my-app
+    app: youtube
   ports:
     - protocol: TCP
       port: 80  # You can use port 80 here for HTTP traffic
