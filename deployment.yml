@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: youtube
-          image: asa96/youtube:5
+          image: asa96/youtube:30
           ports:
             - containerPort: 3000  # Your Node.js application should listen on port 3000
 
