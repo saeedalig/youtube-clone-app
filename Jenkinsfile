@@ -58,6 +58,24 @@ pipeline {
             } 
         }
 		
+        stage('Install Dependencies') {
+            steps {
+                sh "npm install"
+            }
+        }
+
+        stage('OWASP FS Scan') {
+            steps {
+                dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit', odcInstallation: 'DP-Check'
+                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+            }
+        }
+
+        stage('TRIVY FS Scan') {
+            steps {
+                sh "trivy fs . > trivy-fs.txt"
+            }
+        }
 
         stage("Docker Build & Tag"){
             steps{
@@ -68,6 +86,12 @@ pipeline {
                     sh "docker tag ${APP_NAME} ${IMAGE_NAME}:latest"
                     
                 }
+            }
+        }
+
+        stage("TRIVY Image Scan"){
+            steps{
+                sh "trivy image asa96/youtube:latest > trivy-image.txt" 
             }
         }
 
@@ -97,9 +121,6 @@ pipeline {
 
         }
 
-		
-
-        
         stage('Push the changed deployment file to GitHub') {
             steps {
                 script {
@@ -110,10 +131,21 @@ pipeline {
                     git commit -m 'Updated the deployment file'
                     """
                     withCredentials([usernamePassword(credentialsId: 'github', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
-                        sh 'git remote set-url origin https://$USER:$PASS@github.com/saeedalig/k8s-manifest.git'
+                        sh 'git remote set-url origin https://$USER:$PASS@github.com/saeedalig/youtube-clone-app.git'
                         sh 'git push origin main'
                     }
                 }
+            }
+        }
+
+        post {
+            always {
+                echo 'Slack Notifications'
+                slackSend (
+                    channel: '#jenkins',   // Change this to your actual channel name
+                    color: COLOR_MAP[currentBuild.currentResult],
+                    message: "*${currentBuild.currentResult}:* \n Job: ${env.JOB_NAME} \n Build: #${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}"
+                )
             }
         }
     }
