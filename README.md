@@ -9,6 +9,7 @@ In this project, we embark on the deployment of a YouTube-Clone-App with a compr
 - ***Trivy:*** scans the resulting image, ensuring it's free from vulnerabilities.
 - ***OWASP Checks:*** The project emphasizes security with the integration of OWASP checks, fortifying the application against potential threats.
 - ***Argocd:*** Finally, ArgoCD is introduced to the pipeline, streamlining and automating the deployment of applications in Kubernetes clusters.
+- ***Slack Notification:*** To keep the team informed, the Slack notifications is integrated in pipeline, providing real-time updates on the deployment process. 
 
 ![Alt text](pics/img-1.png)
 
