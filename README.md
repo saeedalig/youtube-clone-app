@@ -10,6 +10,9 @@ In this project, we embark on the deployment of a YouTube-Clone-App with a compr
 - ***OWASP Checks:*** The project emphasizes security with the integration of OWASP checks, fortifying the application against potential threats.
 - ***Argocd:*** Finally, ArgoCD is introduced to the pipeline, streamlining and automating the deployment of applications in Kubernetes clusters.
 
+![Alt text](pics/img-1.png)
+
+
 ## Branching Strategy
 I've created two branches *main* and *staging*. When Engineers/Developers push changes to *staging branch* then the owner of the *main branch* reviews and merges the changes into main branch by raising a *Pull Request*.
 
