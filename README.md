@@ -23,3 +23,59 @@ I've created two branches *main* and *staging*. When Engineers/Developers push c
 
 This setup allows for automated building, testing and deploying ans other tasks to be taken whenever a pull request is opened. It helps ensure that changes introduced in the staging branch are tested before they are merged into the main branch, promoting a more reliable and stable codebase.
 
+## Server SetUp
+**Jenkins**
+```
+# Install Java
+sudo apt install openjdk-17-jdk -y
+
+sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
+  https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
+  https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+  /etc/apt/sources.list.d/jenkins.list > /dev/null
+sudo apt-get update -y
+sudo apt-get install jenkins -y
+
+sudo systemctl enable jenkins
+sudo systemctl restart jenkins
+
+# Password
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+```
+
+**Docker**
+```
+sudo apt-get update
+sudo apt-get install docker.io -y
+sudo usermod -aG docker $USER  
+newgrp docker
+sudo chmod 777 /var/run/docker.sock
+```
+**Trivy**
+```
+sudo apt-get install wget apt-transport-https gnupg lsb-release -y
+wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | gpg --dearmor | sudo tee /usr/share/keyrings/trivy.gpg > /dev/null
+echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
+
+sudo apt-get update -y
+sudo apt-get install trivy -y
+```
+**Sonarqube**
+```
+docker run -d --name sonar -p 9000:9000 sonarqube:lts-community
+username and password: `admin`
+```
+**Argocd**
+```
+kubectl create namespace argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+# Service
+kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "NodePort"}}'
+kubectl port-forward svc/argocd-server -n argocd 8085:443
+
+# passwd
+argocd admin initial-password -n argocd
+```
+
