@@ -67,6 +67,8 @@ sudo apt-get install trivy -y
 docker run -d --name sonar -p 9000:9000 sonarqube:lts-community
 username and password: `admin`
 ```
+Access Sonarqube on port 9000 from web and set it up to integrate with jenkins 
+
 **Argocd**
 ```
 kubectl create namespace argocd
@@ -79,8 +81,9 @@ kubectl port-forward svc/argocd-server -n argocd 8085:443
 # passwd
 argocd admin initial-password -n argocd
 ```
+Access Argocd on port 8085 from web and integrate it with GitHub by providing the necessary informations so that Git Repo gets synchronized with Argocd. 
 
-## Install Necessary Plugins in Jenkins and Configure them
+## Install Necessary Plugins in Jenkins and *Configure* them
 - JDK
 - Sonarqube Scanner
 - NodeJs
