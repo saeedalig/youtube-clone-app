@@ -1,9 +1,12 @@
-# Build and Deploy a Modern YouTube Clone Application in React JS with Material UI 5
+## Implemented an Automated CICD Pipeline for YouTube Clone Application (React JS)
 
-![YouTube](https://i.ibb.co/4R5RkmW/Thumbnail-5.png)
+In this project, we embark on the deployment of a YouTube-Clone-App with a comprehensive CI/CD pipeline leveraging key tools used in DevOps. 
 
-### Showcase your dev skills with practical experience and land the coding career of your dreams
-💻 JS Mastery Pro - https://jsmastery.pro/youtube
-✅ A special YOUTUBE discount code is automatically applied!
+- ***Git:*** serves as the backbone for version control, tracking and storing the source code. 
+- ***Jenkins:*** CI/CD orchestrator, diligently monitors the Git repository, triggering an automated sequence via webhooks upon any code changes.
+- ***SonarQube:*** The application undergoes a seamless process within the pipeline: it is built, dependencies are installed, and production-ready bundles are generated. Code quality is scrutinized through *SonarQube*, ensuring strict adherence to coding standards. 
+- ***Docker:*** steps in to containerize the application. Docker images are pushed to a container registry *DockerHub* becoming ready for deployment
+- ***Trivy:*** scans the resulting image, ensuring it's free from vulnerabilities.
+- ***OWASP Checks:*** The project emphasizes security with the integration of OWASP checks, fortifying the application against potential threats.
+- ***Argocd:*** Finally, ArgoCD is introduced to the pipeline, streamlining and automating the deployment of applications in Kubernetes clusters. 
 
-📙 Get the Ultimate Frontend & Backend Development Roadmaps, a Complete JavaScript Cheatsheet, Portfolio Tips, and more - https://www.jsmastery.pro/links
